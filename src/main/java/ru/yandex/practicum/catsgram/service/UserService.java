@@ -13,16 +13,15 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class UserService {
     private final Map<Long, User> users = new HashMap<>();
 
-    @GetMapping
     public Collection<User> findAll() {
         return users.values();
     }
 
-    @PostMapping
     public User create(@RequestBody User user) {
         if (user.getEmail() == null || user.getEmail().isEmpty()) {
             throw new ConditionsNotMetException("Имейл должен быть указан");
@@ -36,7 +35,6 @@ public class UserService {
         return user;
     }
 
-    @PutMapping
     public User updtate(@RequestBody User newUser) {
         if (newUser.getId() == null) {
             throw new ConditionsNotMetException("Id должен быть указан");
@@ -64,6 +62,10 @@ public class UserService {
         }
 
         return oldUser;
+    }
+
+    public Optional<User> findUserById(Long authorId){
+        return Optional.ofNullable(users.get(authorId));
     }
 
     private boolean emailExists(String email) {
