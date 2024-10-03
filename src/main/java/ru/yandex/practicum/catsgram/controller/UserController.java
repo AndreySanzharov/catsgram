@@ -2,32 +2,33 @@ package ru.yandex.practicum.catsgram.controller;
 
 
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.catsgram.exception.ConditionsNotMetException;
-// import ru.yandex.practicum.catsgram.model.Post;
 import ru.yandex.practicum.catsgram.model.User;
+import ru.yandex.practicum.catsgram.service.UserService;
 
-import java.time.Instant;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final Map<Long, User> users = new HashMap<>();
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
-    public Collection<User> findAll() {
-        return users.values();
+    public Collection<User> findAll(){
+        return userService.findAll();
     }
 
     @PostMapping
-    public User create(@RequestBody User user) {
-        if (user.getEmail() == null || user.getEmail().isEmpty()) {
-            throw new ConditionsNotMetException("Имейл должен быть указан");
-        }
-        user.setRegistrationDate(Instant.now());
+    public User create(@RequestBody User user){
+        return userService.create(user);
+    }
 
-        return user;
+    @PutMapping
+    public User update(@RequestBody User newUser){
+        return userService.create(newUser);
     }
 }

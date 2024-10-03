@@ -36,3 +36,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/src/main/java/ru/yandex/practicum/catsgram/exp/
+/src/main/java/ru/yandex/practicum/catsgram/exp/
