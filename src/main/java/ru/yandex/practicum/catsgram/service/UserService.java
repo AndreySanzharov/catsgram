@@ -1,5 +1,6 @@
 package ru.yandex.practicum.catsgram.service;
 
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,7 +15,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
+@Service
 public class UserService {
     private final Map<Long, User> users = new HashMap<>();
 
@@ -69,7 +70,7 @@ public class UserService {
     }
 
     private boolean emailExists(String email) {
-        return users.values().stream().allMatch(user -> user.getEmail().equals(email));
+        return users.values().stream().anyMatch(user -> user.getEmail().equals(email));
     }
 
     private long getNextId() {
