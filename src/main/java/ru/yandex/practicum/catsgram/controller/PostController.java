@@ -1,7 +1,9 @@
 package ru.yandex.practicum.catsgram.controller;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.catsgram.enums.SortOrder;
+import ru.yandex.practicum.catsgram.exception.NotFoundException;
 import ru.yandex.practicum.catsgram.model.Post;
 import ru.yandex.practicum.catsgram.service.PostService;
 
@@ -17,10 +19,25 @@ public class PostController {
     }
 
     @GetMapping
-    public Collection<Post> findAll() {
-        return postService.findAll();
+    public Collection<Post> findAll(
+            @RequestParam(defaultValue = "0") int from,   // Начальный индекс
+            @RequestParam(defaultValue = "10") int size,  // Количество постов на странице
+            @RequestParam(defaultValue = "desc") String sort // Порядок сортировки (asc или desc)
+    ) {
+        // Преобразуем строку параметра sort в перечисление SortOrder
+        SortOrder sortOrder = SortOrder.from(sort);
+
+        // Возвращаем результат вызова метода сервиса с параметрами
+        return postService.findAll(from, size, sortOrder);
     }
 
+    @GetMapping("/{id}")
+    public Post findPostById(@PathVariable Long id) {
+        return postService.findPostById(id)
+                .orElseThrow(() -> new NotFoundException("Пост с id = " + id + " не найден"));
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Post create(@RequestBody Post post)  {
         return postService.create(post);

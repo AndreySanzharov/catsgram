@@ -2,15 +2,14 @@ package ru.yandex.practicum.catsgram.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.catsgram.enums.SortOrder;
 import ru.yandex.practicum.catsgram.exception.ConditionsNotMetException;
 import ru.yandex.practicum.catsgram.exception.NotFoundException;
 import ru.yandex.practicum.catsgram.model.Post;
 
 import java.time.Instant;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -23,8 +22,20 @@ public class PostService {
         this.userService = userService;
     }
 
-    public Collection<Post> findAll() {
-        return posts.values();
+    // Метод для получения списка постов с поддержкой сортировки и пагинации
+    public List<Post> findAll(int from, int size, SortOrder sortOrder) {
+        // Сортировка по дате создания (по возрастанию или убыванию)
+        Comparator<Post> comparator = Comparator.comparing(Post::getPostDate);
+        if (sortOrder == SortOrder.DESCENDING) {
+            comparator = comparator.reversed();
+        }
+
+        // Применяем сортировку и возвращаем посты с учетом пагинации
+        return posts.values().stream()
+                .sorted(comparator)
+                .skip(from) // Пропускаем указанное количество постов
+                .limit(size) // Возвращаем указанное количество постов
+                .collect(Collectors.toList());
     }
 
     public Post create(Post post) {
@@ -35,6 +46,10 @@ public class PostService {
             post.setPostDate(Instant.now());
             posts.put(post.getId(), post);
             return post;
+    }
+
+    public Optional<Post> findPostById(Long postId) {
+        return Optional.ofNullable(posts.get(postId));
     }
 
     public Post update(Post newPost) {
