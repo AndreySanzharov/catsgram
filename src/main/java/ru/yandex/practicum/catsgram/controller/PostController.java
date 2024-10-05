@@ -22,9 +22,8 @@ public class PostController {
     }
 
     @PostMapping
-    public Post create(@RequestBody Post post,
-                       @RequestBody Long authorId) {
-        return postService.create(authorId, post);
+    public Post create(@RequestBody Post post)  {
+        return postService.create(post);
     }
 
     @PutMapping

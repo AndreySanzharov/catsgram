@@ -1,9 +1,6 @@
 package ru.yandex.practicum.catsgram.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.catsgram.exception.ConditionsNotMetException;
 import ru.yandex.practicum.catsgram.exception.DuplicatedDataException;
@@ -15,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
 @Service
 public class UserService {
     private final Map<Long, User> users = new HashMap<>();
@@ -65,7 +63,7 @@ public class UserService {
         return oldUser;
     }
 
-    public Optional<User> findUserById(Long authorId){
+    public Optional<User> findUserById(Long authorId) {
         return Optional.ofNullable(users.get(authorId));
     }
 
