@@ -19,17 +19,18 @@ public class UserController {
     }
 
     @GetMapping
-    public Collection<User> findAll(){
+    public Collection<User> findAll() {
         return userService.findAll();
     }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public User create(@RequestBody User user){
+    public User create(@RequestBody User user) {
         return userService.create(user);
     }
 
     @PutMapping
-    public User update(@RequestBody User newUser){
+    public User update(@RequestBody User newUser) {
         return userService.create(newUser);
     }
 }

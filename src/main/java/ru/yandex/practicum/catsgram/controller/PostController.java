@@ -33,13 +33,13 @@ public class PostController {
 
     @GetMapping("/{id}")
     public Post findPostById(@PathVariable Long id) {
-        return postService.findPostById(id)
+        return postService.findById(id)
                 .orElseThrow(() -> new NotFoundException("Пост с id = " + id + " не найден"));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Post create(@RequestBody Post post)  {
+    public Post create(@RequestBody Post post) {
         return postService.create(post);
     }
 

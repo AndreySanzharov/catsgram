@@ -42,13 +42,13 @@ public class PostService {
         if (post.getDescription() == null || post.getDescription().isBlank()) {
             throw new ConditionsNotMetException("Описание не может быть пустым");
         }
-            post.setId(getNextId());
-            post.setPostDate(Instant.now());
-            posts.put(post.getId(), post);
-            return post;
+        post.setId(getNextId());
+        post.setPostDate(Instant.now());
+        posts.put(post.getId(), post);
+        return post;
     }
 
-    public Optional<Post> findPostById(Long postId) {
+    public Optional<Post> findById(Long postId) {
         return Optional.ofNullable(posts.get(postId));
     }
 
